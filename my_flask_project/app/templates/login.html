@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body{
+            background-color: #d4c5e3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+      <h1>Login</h1>
+      <form method="post" id= "login-form" action="{{ url_for('login') }}">
+        <div class="form-group">
+          <label for="email">Email address:</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      <script>
+        const loginForm = document.getElementById('login-form');
+
+loginForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent the default form submission
+
+  // Get the form values
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  // Perform your login logic here
+  // For this example, we'll just redirect to the index.html page
+  window.location.href = "{{ url_for('index') }}";
+});
+      </script>
+      <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+    </div>
+  </body>
+</html>

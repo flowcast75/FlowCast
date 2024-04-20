@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Calendar</title>
+</head>
+<body>
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button class="prev-month">&lt;</button>
+      <h2 class="current-month"></h2>
+      <button class="next-month">&gt;</button>
+    </div>
+    <table class="calendar-table">
+      <thead>
+        <tr>
+          <th>Sun</th>
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thu</th>
+          <th>Fri</th>
+          <th>Sat</th>
+        </tr>
+      </thead>
+      <tbody class="calendar-body"></tbody>
+    </table>
+  </div>
+  <style>
+    .calendar-container {
+  width: 80%;
+  margin: 2rem auto;
+  font-family: Arial, sans-serif;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-table th, .calendar-table td {
+  padding: 0.5rem;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.calendar-table td.highlighted {
+  background-color: #ddd;
+}
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const calendarBody = document.querySelector('.calendar-body');
+      const currentMonthElement = document.querySelector('.current-month');
+      const prevMonthButton = document.querySelector('.prev-month');
+      const nextMonthButton = document.querySelector('.next-month');
+
+      let currentDate = new Date();
+      let currentMonth = currentDate.getMonth();
+      let currentYear = currentDate.getFullYear();
+
+      function getMonthName(monthIndex) {
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return monthNames[monthIndex];
+      }
+
+      function renderCalendar(month, year) {
+        currentMonthElement.textContent = `${getMonthName(month)} ${year}`;
+        calendarBody.innerHTML = '';
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Get the predicted period start and end dates from local storage
+        const predictedPeriodStart = new Date(localStorage.getItem('predictedPeriodStart'));
+        const predictedPeriodEnd = new Date(localStorage.getItem('predictedPeriodEnd'));
+
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+          const row = document.createElement('tr');
+          for (let j = 0; j < 7; j++) {
+            const cell = document.createElement('td');
+            if (i === 0 && j < firstDay) {
+              cell.textContent = '';
+            } else {
+              if (date > daysInMonth) {
+                break;
+              }
+              cell.textContent = date.toString();
+
+              // Check if the current date is within the predicted period range
+              const currentCellDate = new Date(year, month, date);
+              if (currentCellDate >= predictedPeriodStart && currentCellDate <= predictedPeriodEnd) {
+                cell.classList.add('highlighted');
+              }
+
+              date++;
+            }
+            row.appendChild(cell);
+          }
+          calendarBody.appendChild(row);
+        }
+      }
+
+      prevMonthButton.addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        renderCalendar(currentMonth, currentYear);
+      });
+
+      nextMonthButton.addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        renderCalendar(currentMonth, currentYear);
+      });
+
+      renderCalendar(currentMonth, currentYear);
+    });
+  </script>
+</body>
+</html>

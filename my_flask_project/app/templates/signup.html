@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body{
+            background-color: #d4c5e3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+      <h1>Sign Up</h1>
+      <h5>{{msg}}</h5>
+      <form method="post" id="sign-up-form" action="{{ url_for('signup') }}">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email address:</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth:</label>
+          <input type="date" class="form-control" id="dob" name="dob" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </form>
+      <script>const signUpForm = document.getElementById('sign-up-form');
+
+        // signUpForm.addEventListener('submit', function(event) {
+        //   event.preventDefault(); // Prevent the default form submission
+    
+        //   // Get the form values
+        //   const name = document.getElementById('name').value;
+        //   const email = document.getElementById('email').value;
+        //   const password = document.getElementById('password').value;
+    
+        //   // Perform your sign-up logic here
+        //   // For this example, we'll just redirect to the index.html page
+        //   window.location.href = "{{ url_for('index') }}"
+        // });</script>
+      <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    </div>
+  </body>
+
+</html>

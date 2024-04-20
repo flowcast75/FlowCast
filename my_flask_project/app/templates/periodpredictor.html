@@ -1,0 +1,92 @@
+<div class="contain">
+    <style>/* style.css */
+
+.contain {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+}
+            </style>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const predictButton = document.getElementById('predict-button');
+                const predictedRangeElement = document.getElementById('predicted-range');
+            
+                predictButton.addEventListener('click', function() {
+                  const lastPeriodStart = new Date(document.getElementById('last-period-start').value);
+                  const cycleLength = parseInt(document.getElementById('cycle-length').value);
+                  const periodLength = parseInt(document.getElementById('period-length').value);
+            
+                  const nextPeriodStart = new Date(lastPeriodStart.getTime() + (cycleLength * 24 * 60 * 60 * 1000));
+                  const nextPeriodEnd = new Date(nextPeriodStart.getTime() + (periodLength * 24 * 60 * 60 * 1000));
+            
+                  const nextPeriodStartString = nextPeriodStart.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                  const nextPeriodEndString = nextPeriodEnd.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            
+                  predictedRangeElement.textContent = `${nextPeriodStartString} - ${nextPeriodEndString}`;
+            
+                  // Store the predicted period dates in local storage
+                  localStorage.setItem('predictedPeriodStart', nextPeriodStart.toISOString());
+                  localStorage.setItem('predictedPeriodEnd', nextPeriodEnd.toISOString());
+                });
+              });
+            </script>
+                 <h2>Period Predictor</h2>
+                 <div class="form-group">
+                    <label for="last-period-start">Last Period Start Date:</label>
+                    <input type="date" id="last-period-start" name="last-period-start">
+                  </div>
+                  <div class="form-group">
+                    <label for="cycle-length">Cycle Length (avg 25-30 days):</label>
+                    <input type="number" id="cycle-length" name="cycle-length">
+                  </div>
+                  <div class="form-group">
+                    <label for="period-length">Period Length (avg 5-7 days):</label>
+                    <input type="number" id="period-length" name="period-length">
+                  </div>
+                  <button id="predict-button">Predict</button>
+                  <div class="result">
+                    <h3>Predicted range for next period:</h3>
+                    <p id="predicted-range"></p>
+                  </div>
+</div>
